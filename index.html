@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0b1020" />
+<meta name="description" content="FIBREE — Tableau de bord des interventions et frais de route" />
+<title>FIBREE • Suivi des interventions</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#f5f7fc;--ink:#152039;--muted:#8190a8;--stroke:#e6ebf3;--purple:#7368eb;--purple2:#a295ff;--green:#26b490;--card:#fff;--side:#10182b;--shadow:0 5px 24px rgba(27,45,80,.04)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);font-size:14px}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #b1aafa;outline-offset:2px}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}.side{background:var(--side);color:#f6f6ff;display:flex;flex-direction:column;padding:31px 18px 20px;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:13px;padding:2px 10px 43px}.brandmark{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#8273fe,#a7abff);color:white;font-size:24px;font-weight:800;box-shadow:0 9px 24px #7770e933}.brandname{font-family:Manrope,sans-serif;font-size:23px;font-weight:800;letter-spacing:-1.2px}.brandname em{color:#9f97ff;font-style:normal}.brand small{display:block;font-size:9px;letter-spacing:2px;color:#8792ac;margin-top:1px;font-weight:700}.sidetag{font-size:10px;font-weight:800;letter-spacing:1.9px;color:#72829d;margin:0 12px 13px}.nav-button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:12px 10px;border:1px solid transparent;border-radius:13px;background:transparent;color:#b8c4d6;margin-bottom:7px}.nav-button.active{background:#252c48;border-color:#353e64;color:#fff}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:15px;flex:none}.mavatar{background:#7368eb}.aavatar{background:#25a986}.nav-button b{display:block;font-size:13px}.nav-button small{font-size:11px;color:#7f91ad;display:block;margin-top:3px}.nav-arrow{margin-left:auto;color:#8493b6;font-size:19px}.sidefoot{margin-top:auto;border-top:1px solid #283147;padding:22px 10px 3px}.sidefoot p{font-size:11px;color:#8491a9;line-height:1.7;margin:12px 0}.statusdot{width:8px;height:8px;border-radius:50%;background:#f2b154;display:inline-block;margin-right:7px}.sidefoot .state{font-size:12px;font-weight:700;color:#bbc9de}.main{min-width:0}.top{height:76px;padding:0 43px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--stroke)}.crumb{color:#8995a9;font-size:12px;font-weight:800;letter-spacing:1px}.crumb strong{color:#35435d}.crumb span{margin:0 12px;color:#d4dbe7}.topright{display:flex;align-items:center;gap:11px;font-size:12px;color:#8a96a9}.pulse{width:7px;height:7px;background:#ffbf6b;border-radius:50%}.profile{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#edeaff;color:#6d61d8;font-weight:800;margin-left:10px}.page{max-width:1340px;padding:42px 43px 26px;margin:0 auto}.eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;color:#8677eb;display:flex;align-items:center;gap:9px}.eyebrow:before{content:"";width:23px;height:2px;background:#9185f5}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:31px}.hero h1{font-family:Manrope,sans-serif;font-size:clamp(28px,3.1vw,38px);line-height:1.2;letter-spacing:-1.6px;margin:13px 0 10px;font-weight:800}.spark{color:#eea64c}.hero p{color:#8693a7;font-size:13px;margin:0;line-height:1.7}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid #e0e6f1;background:#fff;color:#4e5d77;border-radius:10px;padding:11px 15px;font-weight:800;font-size:12px;white-space:nowrap;transition:.15s}.btn:hover{transform:translateY(-1px);filter:brightness(.98)}.btn-primary{background:var(--purple);color:white;border-color:var(--purple);box-shadow:0 6px 15px #7368eb25}.btn-dark{background:#202c45;color:white;border-color:#202c45}.btn-ghost{background:#f8f9fc;border:1px solid #e9ecf3}.btn-small{font-size:11px;padding:7px 10px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}.metric,.card{background:#fff;border:1px solid #edf0f5;box-shadow:var(--shadow);border-radius:16px}.metric{padding:23px 23px 21px;min-width:0}.metric-head{display:flex;align-items:center;justify-content:space-between;color:#8692a8;font-size:10px;letter-spacing:1px;font-weight:800;gap:5px}.metric-head .symbol{background:#f3f1ff;color:#7e72ec;width:30px;height:30px;display:grid;place-items:center;border-radius:9px;font-size:16px;flex:none}.metric:nth-child(2) .symbol{background:#e9f7f3;color:#29af8c}.metric:nth-child(3) .symbol{background:#fff4e9;color:#edaa58}.metric:nth-child(4) .symbol{background:#ebf0fe;color:#709bdf}.metric-val{font:800 clamp(22px,2.8vw,33px)/1.1 Manrope,sans-serif;letter-spacing:-1.4px;margin-top:19px;overflow-wrap:anywhere}.metric-foot{font-size:11px;color:#9ba6b8;margin-top:10px}.twocol{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(265px,.9fr);gap:19px;margin-bottom:19px}.card{padding:24px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.overline{font-size:9px;letter-spacing:1.7px;font-weight:800;color:#9c9faf}.card h2{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.5px;font-size:17px;margin:6px 0 0}.chip{color:#8b81da;font-size:10px;font-weight:800;border-radius:50px;background:#f2f0ff;padding:7px 11px;white-space:nowrap}.chartarea{height:215px;display:flex;align-items:center;justify-content:center}.empty{text-align:center;color:#8b99b0}.emptyicon{width:55px;height:55px;border-radius:17px;display:grid;place-items:center;background:#f5f4ff;color:#8b83ef;margin:0 auto 16px;font-size:25px}.empty strong{display:block;color:#4e5b72;font-size:13px}.empty p{font-size:11px;margin:8px auto;max-width:230px;line-height:1.7}.barchart{display:flex;align-items:end;width:100%;height:205px;padding:20px 0 0;gap:11px;border-bottom:1px solid #e8ebf1}.baritem{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:9px}.bar{min-height:3px;width:min(55px,70%);background:linear-gradient(0deg,#6a60e2,#b5aafe);border-radius:6px 6px 0 0;transition:.25s}.barlabel{font-size:10px;color:#9da6b5;white-space:nowrap}.breakdown .line{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:#8994a7;margin:17px 0}.breakdown strong{color:#3e4a60;font-weight:800}.breakdown .total{border-top:1px dashed #e4e9f1;padding-top:20px;margin-top:25px;color:#364257;font-weight:800}.breakdown .total strong{font-family:Manrope,sans-serif;font-size:20px;color:#23a985;letter-spacing:-.7px}.hint{border-radius:11px;background:#f7f9fe;padding:12px 14px;margin-top:23px;color:#8895aa;font-size:11px;line-height:1.65}.tablecard{padding-bottom:9px}.scroller{overflow-x:auto}.tablecard table{width:100%;border-collapse:collapse;text-align:left;min-width:700px}.tablecard th{font-size:10px;color:#9ba5b4;letter-spacing:.8px;font-weight:800;border-bottom:1px solid #ecf0f6;padding:14px 11px}.tablecard td{padding:16px 11px;border-bottom:1px solid #f0f3f8;color:#485571;font-size:12px;font-weight:600}.tablecard th:first-child,.tablecard td:first-child{padding-left:0}.tablecard th:last-child,.tablecard td:last-child{padding-right:0}.tablecard tr:last-child td{border:0}.tablecard .emptytable{text-align:center;color:#a1abb8;padding:35px 10px}.note{color:#9aa5b7;font-size:11px;margin:17px 2px;line-height:1.6}.warning{display:flex;gap:11px;padding:13px 17px;background:#fffbef;border:1px solid #f9eacd;color:#947844;border-radius:11px;line-height:1.6;font-size:11px;margin:0 0 19px}.warning b{font-weight:800}.warning p{margin:2px 0 0}.warning.info{background:#f0f6ff;border-color:#dce7f9;color:#667eaa}.warning.hidden,.hidden{display:none!important}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:8px;color:#66748d;font-size:11px;font-weight:800}.field input{width:100%;min-width:0;border:1px solid #e5eaf2;background:#fbfcff;border-radius:10px;padding:12px;color:#38445f;font-weight:600;outline:0}.field input:focus{border-color:#a198fa;box-shadow:0 0 0 3px #a89cf22b}.formgrid .full{grid-column:1/-1}.parameters{margin-top:18px;padding-top:16px;border-top:1px solid #eef0f6}.parameters summary{color:#68768e;font-weight:800;font-size:12px;cursor:pointer}.parameters .formgrid{margin-top:15px}.preview{display:flex;justify-content:space-between;align-items:center;border-radius:11px;background:#f5f4ff;padding:16px;margin:21px 0;color:#68768c;font-size:12px}.preview strong{color:#7164e0;font:800 22px Manrope,sans-serif}.formsubmit{width:100%}.feedback{min-height:18px;font-size:12px;color:#2b9c7e;margin:11px 0 0}.remove{color:#bc5871;border:0;background:#fff3f5;border-radius:7px;padding:7px 9px;font-size:11px;font-weight:800}.footer{display:flex;justify-content:space-between;gap:10px;color:#a0aabc;font-size:10px;border-top:1px solid #e5eaf2;margin-top:33px;padding-top:20px}.filelabel{display:inline-block}.filelabel input{display:none}@media(max-width:1080px){.layout{grid-template-columns:207px minmax(0,1fr)}.side{padding-left:12px;padding-right:12px}.page{padding:31px 23px}.top{padding:0 23px}.metrics{gap:10px}.metric{padding:18px 14px}.twocol{grid-template-columns:1fr}.chartarea{height:180px}}@media(max-width:750px){.layout{display:block}.side{height:auto;position:static;padding:13px 15px 12px;display:block}.brand{padding:0 3px 10px}.brandmark{width:30px;height:30px;font-size:19px;border-radius:9px}.brandname{font-size:20px}.brand small{font-size:8px}.sidetag,.sidefoot{display:none}.personnav{display:flex;gap:8px}.nav-button{flex:1;margin:0;padding:9px 10px;border-radius:10px}.avatar{height:28px;width:28px;border-radius:9px;font-size:12px}.nav-button small,.nav-arrow{display:none}.nav-button b{font-size:12px}.top{height:50px;padding:0 17px}.topright span:nth-child(2){display:none}.page{padding:26px 15px}.hero{align-items:start;flex-direction:column;gap:20px}.hero h1{font-size:29px}.hero p{font-size:12px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{padding:17px}.metric-val{font-size:25px}.metric-head{font-size:9px}.card{padding:18px}.formgrid{gap:11px}.footer{flex-direction:column}}
+
+/* Mode synchronisé : authentification obligatoire, avant toute donnée */
+body.signed-out .layout{display:none !important}
+[hidden], .hidden{display:none!important}
+.auth-gate{position:fixed;inset:0;overflow:auto;display:grid;place-items:center;padding:26px;background:radial-gradient(circle at 25% 5%,#2c3567 0%,#10182b 55%,#080f1e 100%);z-index:999}
+.auth-card{width:min(100%,440px);background:#fff;border-radius:22px;padding:34px;box-shadow:0 24px 90px #0006}
+.auth-logo{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:800;color:#111c33;margin-bottom:30px}
+.auth-logo span:first-child{display:grid;place-items:center;background:linear-gradient(130deg,#746bf2,#ab9bff);color:white;width:45px;height:45px;border-radius:13px}
+.auth-card h1{font:800 24px 'Manrope',system-ui;margin:0 0 8px}
+.auth-subtitle{color:#79869b;line-height:1.5;margin:0 0 26px}
+.auth-field{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:13px;margin-top:15px}
+.auth-field input,.auth-field select{background:#f8f9fd;border:1px solid #dce2ef;border-radius:11px;padding:13px 14px;width:100%;font-size:15px}
+.auth-submit{display:block;width:100%;margin-top:25px;border:0;background:#746bf2;color:white;padding:14px;border-radius:12px;font-weight:800;font-size:15px}
+.auth-switch{width:100%;border:0;background:transparent;margin:12px 0 0;color:#6257d8;font-weight:800;padding:10px}
+.auth-notice{font-size:12px;line-height:1.5;color:#7b8799;margin:15px 0 0}
+.auth-message{font-size:13px;color:#b04442;line-height:1.5;min-height:2em}
+.sync-toolbar{display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin:0 0 20px}
+.sync-toolbar small{color:#7e8ba0;margin-right:auto}
+.sync-toolbar .btn{padding:9px 14px}
+.legacy-import{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-bottom:17px}
+.logout-btn{margin-left:11px;background:transparent;border:1px solid #dce2ef;border-radius:8px;color:#63718a;padding:8px 10px;font-size:12px}
+.logout-btn:hover{background:#eeeefd}
+@media(max-width:650px){.auth-card{padding:23px;border-radius:17px}.logout-btn{margin-left:0;font-size:11px}.sync-toolbar{margin-top:10px}}
+</style>
+</head>
+<body class="signed-out">
+<div class="auth-gate" id="auth-gate">
+  <div class="auth-card">
+    <div class="auth-logo"><span>⌁</span> FIBREE<span style="color:#756bf2">.</span></div>
+    <h1 id="auth-title">Connexion sécurisée</h1>
+    <p class="auth-subtitle">Retrouve tes interventions et tes calculs sur tous tes appareils. Chaque compte possède ses propres données privées.</p>
+    <form id="auth-form">
+      <label class="auth-field" id="auth-person-wrap">Mon espace<select id="auth-person"><option value="m">Mohamed</option><option value="a">Anaïs</option></select></label>
+      <label class="auth-field">Adresse e-mail<input id="auth-email" type="email" autocomplete="username" required placeholder="nom@exemple.fr"></label>
+      <label class="auth-field">Mot de passe<input id="auth-password" type="password" minlength="8" autocomplete="current-password" required placeholder="8 caractères minimum"></label>
+      <button class="auth-submit" id="auth-submit" type="submit">Me connecter</button>
+      <button class="auth-switch" id="auth-mode-btn" type="button">Créer un compte</button>
+      <p class="auth-message" role="status" aria-live="polite" id="auth-message"></p>
+    </form>
+    <p class="auth-notice">Connexion sécurisée par Supabase · Données séparées par utilisateur · Aucun mot de passe envoyé à ChatGPT.</p>
+  </div>
+</div>
+<div class="layout">
+  <aside class="side">
+    <div class="brand"><span class="brandmark">⌁</span><span><span class="brandname">fibree<em>.</em></span><small>TABLEAU DE BORD</small></span></div>
+    <div class="sidetag">MON ESPACE</div>
+    <nav class="personnav" aria-label="Espaces">
+      <button type="button" class="nav-button active" data-go="m" aria-pressed="true"><span class="avatar mavatar">M</span><span><b>Mohamed</b><small>Suivi des interventions</small></span><span class="nav-arrow">›</span></button>
+      <button type="button" class="nav-button" data-go="a" aria-pressed="false"><span class="avatar aavatar">A</span><span><b>Anaïs</b><small>Saisie manuelle</small></span><span class="nav-arrow">›</span></button>
+    </nav>
+    <div class="sidefoot"><div class="state"><span class="statusdot"></span>Base Supabase sécurisée</div><p>Chacun se connecte à son compte. Les données ne sont pas visibles par les autres utilisateurs.</p></div>
+  </aside>
+  <div class="main">
+    <header class="top"><div class="crumb">FIBREE <span>/</span> <strong id="crumb-name">MOHAMED</strong></div><div class="topright"><span class="pulse"></span><span id="sync-text">Connexion…</span><span class="profile" id="top-profile">M</span><button class="logout-btn" id="sign-out" type="button">Déconnexion</button></div></header>
+    <main class="page">
+      <div class="sync-toolbar"><small><span id="connected-account"></span> · <span id="sync-help">Synchronisation dans le cloud</span></small><button class="btn" id="sync-now" type="button">↻ Actualiser</button></div>
+      <div id="legacy-banner" class="warning info legacy-import hidden" role="status"><span>ⓘ</span><div><b>Anciennes données trouvées sur cet appareil : <span id="legacy-count">0</span> intervention(s).</b><p>Tu peux les importer une seule fois dans ton compte sécurisé. Rien ne sera effacé du navigateur.</p></div><button class="btn btn-dark" type="button" id="import-legacy">Importer</button></div>
+      <section id="page-m">
+        <div class="hero"><div><div class="eyebrow">SUIVI QUOTIDIEN</div><h1>Bonjour, Mohamed <span class="spark">✳</span></h1><p>Interventions, kilomètres et frais de déplacement au même endroit.</p></div><div class="actions"><label class="btn btn-dark filelabel">↑ Importer mon suivi<input id="import-m" type="file" accept=".json,application/json"></label><button class="btn" type="button" id="demo-m">Aperçu démo</button><button class="btn" type="button" id="clear-m">Effacer les données locales</button></div></div>
+        <div class="warning info"><span>ⓘ</span><div><b>Synchronisation automatique activée.</b><p>Les interventions de ce compte sont stockées dans Supabase et actualisées automatiquement. Les captures envoyées à ChatGPT pourront être ajoutées à ce compte après identification.</p></div></div>
+        <div class="warning hidden" id="demo-note"><span>⚠</span><div><b>Données de démonstration fictives.</b><p>Ces montants n'ont aucun rapport avec tes interventions réelles.</p></div></div>
+        <div class="metrics"><article class="metric"><div class="metric-head">CHIFFRE D'AFFAIRES <span class="symbol">↗</span></div><div class="metric-val" id="m-ca">—</div><div class="metric-foot">Montant HT enregistré</div></article><article class="metric"><div class="metric-head">INTERVENTIONS <span class="symbol">▣</span></div><div class="metric-val" id="m-count">—</div><div class="metric-foot">Prestations cumulées</div></article><article class="metric"><div class="metric-head">KILOMÈTRES <span class="symbol">⌁</span></div><div class="metric-val" id="m-km">—</div><div class="metric-foot">Distance totale</div></article><article class="metric"><div class="metric-head">FRAIS DE ROUTE <span class="symbol">◈</span></div><div class="metric-val" id="m-road">—</div><div class="metric-foot">Carburant et péages</div></article></div>
+        <div class="twocol"><article class="card"><div class="card-head"><div><div class="overline">ACTIVITÉ</div><h2>Chiffre d'affaires par journée</h2></div><span class="chip">Journalier</span></div><div class="chartarea" id="m-chart"><div class="empty"><span class="emptyicon">▥</span><strong>Aucune journée chargée</strong><p>Tes récapitulatifs apparaîtront ici à la première mise à jour.</p></div></div></article><article class="card"><div class="card-head"><div><div class="overline">BILAN</div><h2>Récapitulatif général</h2></div><span class="chip">Total</span></div><div class="breakdown"><div class="line"><span>Chiffre d'affaires HT</span><strong id="m-total-ca">—</strong></div><div class="line"><span>Carburant estimé</span><strong id="m-fuel">—</strong></div><div class="line"><span>Péages</span><strong id="m-tolls">—</strong></div><div class="line total"><span>Après frais de route</span><strong id="m-net">—</strong></div></div><div class="hint">Indicateur après frais de déplacement, hors matériel, charges sociales et impôts.</div></article></div>
+        <article class="card tablecard"><div class="card-head"><div><div class="overline">HISTORIQUE</div><h2>Détail des journées</h2></div><span class="chip" id="m-days">0 jour</span></div><div class="scroller"><table><thead><tr><th>DATE</th><th>INTERVENTIONS</th><th>KM</th><th>CARBURANT</th><th>PÉAGES</th><th>CA HT</th><th>APRÈS TRAJET</th></tr></thead><tbody id="m-table"><tr><td class="emptytable" colspan="7">Aucune journée renseignée.</td></tr></tbody></table></div></article>
+        <p class="note" id="m-note">Aucune donnée personnelle n'est inscrite dans le code public du site.</p>
+      </section>
+      <section id="page-a" class="hidden">
+        <div class="hero"><div><div class="eyebrow">ESPACE PERSONNEL</div><h1>Bonjour, Anaïs <span class="spark">✳</span></h1><p>Enregistre chaque prestation et laisse le tableau faire les calculs.</p></div><div class="actions"><button class="btn btn-dark" id="a-export" type="button">↓ Exporter mon suivi</button><label class="btn filelabel">↑ Importer<input type="file" id="a-import" accept=".json,application/json"></label></div></div>
+        <div class="warning"><span>ⓘ</span><div><b>Enregistrement en ligne sécurisé.</b><p>Chaque intervention est sauvegardée dans Supabase dès que tu valides le formulaire. Tu peux consulter ton suivi depuis un autre appareil avec tes identifiants.</p></div></div>
+        <div class="metrics"><article class="metric"><div class="metric-head">CHIFFRE D'AFFAIRES <span class="symbol">↗</span></div><div class="metric-val" id="a-ca">0 €</div><div class="metric-foot">Montant HT cumulé</div></article><article class="metric"><div class="metric-head">INTERVENTIONS <span class="symbol">▣</span></div><div class="metric-val" id="a-count">0</div><div class="metric-foot">Prestations cumulées</div></article><article class="metric"><div class="metric-head">KILOMÈTRES <span class="symbol">⌁</span></div><div class="metric-val" id="a-km">0 km</div><div class="metric-foot">Distance cumulée</div></article><article class="metric"><div class="metric-head">APRÈS FRAIS ROUTE <span class="symbol">◈</span></div><div class="metric-val" id="a-net">0 €</div><div class="metric-foot">Hors matériel et charges</div></article></div>
+        <div class="twocol"><article class="card"><div class="card-head"><div><div class="overline">NOUVELLE ENTRÉE</div><h2>Ajouter une intervention</h2></div><span class="chip">Manuel</span></div><form id="a-form"><div class="formgrid"><label class="field">Date<input type="date" id="f-date" required></label><label class="field">Type d'intervention<input id="f-type" type="text" maxlength="100" placeholder="Ex. RACC pavillon aérien" required></label><label class="field">Quantité<input id="f-qty" type="number" min="1" step="1" value="1" required></label><label class="field">Tarif unitaire HT (€)<input id="f-price" type="number" min="0" step="0.01" placeholder="Ex. 172" required></label><label class="field">Kilomètres<input id="f-km" type="number" min="0" step="0.1" value="0" required></label><label class="field">Péages (€)<input id="f-tolls" type="number" min="0" step="0.01" value="0" required></label></div><details class="parameters"><summary>Modifier les paramètres carburant</summary><div class="formgrid"><label class="field">Consommation (L/100 km)<input id="f-cons" type="number" min="0" max="100" step="0.1" value="15" required></label><label class="field">Prix du gazole (€/L)<input id="f-fuel-price" type="number" min="0" step="0.01" value="2.4" required></label></div></details><div class="preview"><span>Chiffre d'affaires de cette entrée</span><strong id="f-preview">0,00 €</strong></div><button class="btn btn-primary formsubmit" type="submit">+ Enregistrer l'intervention</button><p class="feedback" id="a-msg" role="status"></p></form></article><article class="card"><div class="card-head"><div><div class="overline">CALCUL AUTOMATIQUE</div><h2>Ton récapitulatif</h2></div><span class="chip">Cumul</span></div><div class="breakdown"><div class="line"><span>Chiffre d'affaires HT</span><strong id="a-total-ca">0 €</strong></div><div class="line"><span>Carburant estimé</span><strong id="a-fuel">0 €</strong></div><div class="line"><span>Péages</span><strong id="a-tolls">0 €</strong></div><div class="line total"><span>Après frais de route</span><strong id="a-total-net">0 €</strong></div></div><div class="hint">Chaque ligne utilise sa propre consommation et son prix au litre. Les calculs se font immédiatement à l'enregistrement.</div></article></div>
+        <article class="card tablecard"><div class="card-head"><div><div class="overline">HISTORIQUE</div><h2>Mes interventions</h2></div><span class="chip" id="a-days">0 entrée</span></div><div class="scroller"><table><thead><tr><th>DATE</th><th>PRESTATION</th><th>QTÉ</th><th>KM</th><th>CARBURANT</th><th>PÉAGES</th><th>CA HT</th><th></th></tr></thead><tbody id="a-table"><tr><td colspan="8" class="emptytable">Aucune intervention pour le moment.</td></tr></tbody></table></div></article>
+      </section>
+      <footer class="footer"><span>© FIBREE · Suivi d'activité</span><span>Synchronisation Supabase · Multi-appareils</span></footer>
+    </main>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+'use strict';
+// Supabase publishable keys are designed for public browser clients. Security is enforced by RLS.
+const SUPABASE_URL='https://kmfnftgimbtfnadykiop.supabase.co';
+const SUPABASE_PUBLIC_KEY='sb_publishable_8cEafIFUC08y-GeWptEChA_yyEG--AU';
+const client=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+});
+const $=id=>document.getElementById(id);
+const money=x=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:2}).format(x);
+const number=x=>new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(x);
+const storage={m:'fibree.mohamed.v1',a:'fibree.anais.v1'};
+let activeUser=null,activeRole=null,mRows=[],aRows=[],demo=false;
+let inFlight=null;
+let authMode='login';
+const numeric=x=>Number.isFinite(Number(x))?Math.max(0,Number(x)):0;
+const txt=(id,value)=>{if($(id))$(id).textContent=String(value)};
+function cleanRow(r){
+  if(!r||typeof r!=='object'||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(r.date)||!Number.isFinite(Date.parse(r.date+'T12:00:00')))throw Error('Date incorrecte');
+  const price=numeric(r.unitPrice),qty=Math.max(1,Math.round(numeric(r.qty??1))),km=numeric(r.km),tolls=numeric(r.tolls),consumption=numeric(r.consumption??15),fuelPrice=numeric(r.fuelPrice??2.4);
+  if([price,qty,km,tolls,consumption,fuelPrice].some(v=>v>1e7)||qty>1000||km>1e6||tolls>1e6)throw Error('Valeur trop grande');
+  if(consumption>100||fuelPrice>100)throw Error('Paramètres de carburant incorrects');
+  return {id:String(r.id||crypto.randomUUID()),date:r.date,type:String(r.type||'Intervention').slice(0,160),reference:r.reference?String(r.reference).slice(0,120):null,qty,unitPrice:price,km,tolls,consumption,fuelPrice};
+}
+function toDB(r,legacyImportId=null){return {
+  user_id:activeUser.id,work_date:r.date,intervention_type:r.type,reference:r.reference||null,
+  quantity:r.qty,unit_price_ht:r.unitPrice,kilometers:r.km,
+  consumption_l100:r.consumption,fuel_eur_l:r.fuelPrice,tolls_eur:r.tolls,
+  legacy_import_id:legacyImportId
+}}
+function fromDB(r){return {id:r.id,date:r.work_date,type:r.intervention_type,reference:r.reference||null,qty:Number(r.quantity),unitPrice:Number(r.unit_price_ht),km:Number(r.kilometers),consumption:Number(r.consumption_l100),fuelPrice:Number(r.fuel_eur_l),tolls:Number(r.tolls_eur)}}
+function totals(rows){return rows.reduce((s,r)=>{s.ca+=r.qty*r.unitPrice;s.count+=r.qty;s.km+=r.km;s.fuel+=r.km*r.consumption/100*r.fuelPrice;s.tolls+=r.tolls;return s},{ca:0,count:0,km:0,fuel:0,tolls:0})}
+function dateFmt(s){const d=new Date(s+'T12:00:00');return Number.isNaN(+d)?s:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}
+function renderM(){
+  const rows=demo?[
+    {date:'2026-01-12',type:'Raccordement aérien',qty:2,unitPrice:110,km:45,tolls:2,consumption:8,fuelPrice:1.8},
+    {date:'2026-01-13',type:'Installation',qty:3,unitPrice:85,km:66,tolls:0,consumption:8,fuelPrice:1.8},
+    {date:'2026-01-14',type:'SAV',qty:2,unitPrice:70,km:38,tolls:4,consumption:8,fuelPrice:1.8}
+  ]:mRows;
+  const t=totals(rows),empty=!rows.length;
+  txt('m-ca',empty?'—':money(t.ca));txt('m-count',empty?'—':number(t.count));
+  txt('m-km',empty?'—':number(t.km)+' km');txt('m-road',empty?'—':money(t.fuel+t.tolls));
+  txt('m-total-ca',empty?'—':money(t.ca));txt('m-fuel',empty?'—':money(t.fuel));
+  txt('m-tolls',empty?'—':money(t.tolls));txt('m-net',empty?'—':money(t.ca-t.fuel-t.tolls));
+  const grouped={};for(const r of rows){(grouped[r.date]??=[]).push(r)}
+  const days=Object.keys(grouped).sort().reverse();txt('m-days',days.length+(days.length>1?' jours':' jour'));
+  const tbody=$('m-table');tbody.replaceChildren();
+  if(empty){tbody.innerHTML='<tr><td colspan="7" class="emptytable">Aucune journée renseignée.</td></tr>'}
+  else for(const day of days){const x=totals(grouped[day]),tr=document.createElement('tr');[dateFmt(day),number(x.count),number(x.km)+' km',money(x.fuel),money(x.tolls),money(x.ca),money(x.ca-x.fuel-x.tolls)].forEach(v=>{let td=document.createElement('td');td.textContent=v;tr.append(td)});tbody.append(tr)}
+  const chart=$('m-chart');chart.replaceChildren();
+  if(empty){chart.innerHTML='<div class="empty"><span class="emptyicon">▥</span><strong>Aucune journée chargée</strong><p>Tes récapitulatifs apparaîtront ici à la première mise à jour.</p></div>'}
+  else{const el=document.createElement('div');el.className='barchart';const last=days.slice(0,7).reverse(),max=Math.max(1,...last.map(d=>totals(grouped[d]).ca));for(const day of last){const b=document.createElement('div'),bar=document.createElement('div'),lab=document.createElement('div');b.className='baritem';bar.className='bar';const ca=totals(grouped[day]).ca;bar.style.height=Math.max(3,(ca/max)*165)+'px';bar.title=dateFmt(day)+' : '+money(ca);lab.className='barlabel';lab.textContent=day.slice(8,10)+'/'+day.slice(5,7);b.append(bar,lab);el.append(b)}chart.append(el)}
+  $('demo-note').classList.toggle('hidden',!demo);
+  txt('m-note',demo?'Mode démonstration : chiffres entièrement fictifs.':'Données privées synchronisées dans Supabase. Aucune donnée personnelle dans le dépôt GitHub public.');
+}
+function renderA(){
+  const t=totals(aRows);txt('a-ca',money(t.ca));txt('a-count',number(t.count));
+  txt('a-km',number(t.km)+' km');txt('a-net',money(t.ca-t.fuel-t.tolls));
+  txt('a-total-ca',money(t.ca));txt('a-fuel',money(t.fuel));txt('a-tolls',money(t.tolls));
+  txt('a-total-net',money(t.ca-t.fuel-t.tolls));
+  txt('a-days',aRows.length+(aRows.length>1?' entrées':' entrée'));
+  const tbody=$('a-table');tbody.replaceChildren();
+  if(!aRows.length){tbody.innerHTML='<tr><td colspan="8" class="emptytable">Aucune intervention pour le moment.</td></tr>';return}
+  for(const r of [...aRows].sort((a,b)=>b.date.localeCompare(a.date))){
+    const tr=document.createElement('tr');
+    [dateFmt(r.date),r.type,String(r.qty),number(r.km)+' km',money(r.km*r.consumption/100*r.fuelPrice),money(r.tolls),money(r.qty*r.unitPrice)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});
+    const td=document.createElement('td'),button=document.createElement('button');button.type='button';button.className='remove';button.textContent='Supprimer';button.addEventListener('click',()=>deleteRow(r.id));td.append(button);tr.append(td);tbody.append(tr);
+  }
+}
+function switchPage(id){
+  if(!activeUser||id!==activeRole)return;
+  for(const p of ['m','a']){
+    $('page-'+p).classList.toggle('hidden',p!==id);
+    const nav=document.querySelector('[data-go="'+p+'"]');
+    nav.classList.toggle('active',p===id);
+    nav.setAttribute('aria-pressed',String(p===id));
+    nav.hidden=p!==activeRole;
+  }
+  txt('crumb-name',id==='m'?'MOHAMED':'ANAÏS');txt('top-profile',id==='m'?'M':'A');
+  $('top-profile').style.background=id==='m'?'#edeaff':'#e4faf2';
+  $('top-profile').style.color=id==='m'?'#6d61d8':'#149777';
+  window.location.hash=id;
+}
+function syncState(state){txt('sync-text',state)}
+function safeReadLegacy(){
+  try{const data=JSON.parse(localStorage.getItem(storage[activeRole]));return Array.isArray(data)?data:[]}catch{return []}
+}
+function showLegacyBanner(){
+  const old=safeReadLegacy();const marker='fibree.migrated.'+activeUser.id+'.'+activeRole;
+  const show=old.length>0&&!localStorage.getItem(marker);
+  $('legacy-banner').classList.toggle('hidden',!show);
+  txt('legacy-count',old.length);
+}
+async function refreshRows(silent=false){
+  if(!activeUser||!client)return;
+  if(inFlight)return inFlight;
+  const uid=activeUser.id;
+  if(!silent)syncState('Synchronisation…');
+  inFlight=(async()=>{
+    const {data,error}=await client.from('interventions').select('id,work_date,intervention_type,reference,quantity,unit_price_ht,kilometers,consumption_l100,fuel_eur_l,tolls_eur').eq('user_id',uid).order('work_date',{ascending:false}).limit(5000);
+    if(error)throw error;
+    if(!activeUser||activeUser.id!==uid)return;
+    const rows=(data||[]).map(fromDB);
+    if(activeRole==='m'){mRows=rows;renderM()}else{aRows=rows;renderA()}
+    syncState('Synchronisé · '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+    if(rows.length===5000)txt('sync-help','Affichage limité aux 5 000 interventions les plus récentes.');
+    else txt('sync-help','Sauvegarde automatique sécurisée · actualisation toutes les 45 secondes.');
+  })();
+  try{await inFlight}catch(e){console.error('FIBREE: synchronisation:',e);syncState('Erreur réseau');txt('sync-help','Connexion impossible : réessaie en appuyant sur Actualiser.');if(!silent)alert('Impossible de synchroniser les interventions : '+e.message)}finally{inFlight=null}
+}
+async function bootstrap(user){
+  try{
+    const {data,error}=await client.from('profiles').select('id,display_name').eq('id',user.id).single();
+    if(error)throw error;
+    activeUser=user;
+    const name=data.display_name||'Mohamed';
+    activeRole=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().startsWith('anais')?'a':'m';
+    mRows=[];aRows=[];demo=false;txt('demo-m','Aperçu démo');
+    txt('connected-account',user.email||'Compte connecté');
+    document.body.classList.remove('signed-out');
+    $('auth-gate').classList.add('hidden');
+    switchPage(activeRole);
+    showLegacyBanner();
+    await refreshRows(true);
+  }catch(e){console.error('FIBREE: ouverture du compte',e);txt('auth-message','Impossible de charger ton profil : '+e.message);document.body.classList.add('signed-out');$('auth-gate').classList.remove('hidden')}
+}
+function signedOutUI(){
+  activeUser=null;activeRole=null;mRows=[];aRows=[];demo=false;
+  document.body.classList.add('signed-out');$('auth-gate').classList.remove('hidden');
+  txt('sync-text','Connexion requise');
+}
+function setAuthMode(mode){authMode=mode;const signingUp=mode==='signup';
+  $('auth-person-wrap').classList.toggle('hidden',!signingUp);
+  txt('auth-title',signingUp?'Créer mon compte':'Connexion sécurisée');
+  txt('auth-submit',signingUp?'Créer mon compte':'Me connecter');
+  txt('auth-mode-btn',signingUp?'J’ai déjà un compte':'Créer un compte');
+  txt('auth-message','');
+  $('auth-password').autocomplete=signingUp?'new-password':'current-password';
+}
+async function submitAuth(e){
+  e.preventDefault();if(!client){txt('auth-message','Le service de connexion ne s’est pas chargé. Vérifie ta connexion Internet et actualise la page.');return}
+  const email=$('auth-email').value.trim().toLowerCase(),password=$('auth-password').value;
+  const btn=$('auth-submit');btn.disabled=true;txt('auth-message','Connexion en cours…');
+  try{
+    if(authMode==='signup'){
+      const display_name=$('auth-person').value==='a'?'Anaïs':'Mohamed';
+      const {data,error}=await client.auth.signUp({email,password,options:{data:{display_name},emailRedirectTo:location.origin+location.pathname}});
+      if(error)throw error;
+      if(data.session){await bootstrap(data.user)}else{txt('auth-message','Compte créé : vérifie ta boîte e-mail pour confirmer ton adresse, puis reviens ici te connecter. Si le lien ouvre une page locale, ton e-mail peut quand même avoir été vérifié : reviens sur FIBREE.');setAuthMode('login');txt('auth-message','Vérifie ton e-mail, puis reconnecte-toi sur FIBREE.');}
+    }else{
+      const {data,error}=await client.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      await bootstrap(data.user);
+    }
+  }catch(e){console.error('FIBREE auth:',e);txt('auth-message','Connexion impossible : '+e.message)}finally{btn.disabled=false}
+}
+async function deleteRow(id){
+  if(!activeUser||activeRole!=='a'||!confirm('Supprimer cette intervention de ton compte ?'))return;
+  const {error}=await client.from('interventions').delete().eq('user_id',activeUser.id).eq('id',id);
+  if(error){alert('Suppression impossible : '+error.message);return}
+  await refreshRows(true);
+}
+function fileRowsFromJson(text){
+  const parsed=JSON.parse(text),raw=Array.isArray(parsed)?parsed:parsed.rows;
+  if(!Array.isArray(raw)||raw.length>3000)throw Error('Le fichier doit contenir une liste « rows » de 3 000 lignes maximum.');
+  return raw.map(cleanRow);
+}
+async function importRows(rows){
+  if(!activeUser)throw Error('Connecte-toi avant d’importer');
+  let completed=0;
+  for(let i=0;i<rows.length;i+=100){
+    const chunk=rows.slice(i,i+100).map(r=>toDB(r,'v1:'+r.id));
+    const {error}=await client.from('interventions').upsert(chunk,{onConflict:'user_id,legacy_import_id'});
+    if(error)throw Error('Import arrêté après '+completed+' lignes : '+error.message);
+    completed+=chunk.length;
+  }
+  await refreshRows(true);
+  return completed;
+}
+function download(name,payload){
+  const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+async function uploadFileEvent(e){
+  const f=e.target.files?.[0];if(!f)return;
+  try{
+    if(f.size>2_000_000)throw Error('Fichier trop volumineux');
+    const rows=fileRowsFromJson(await f.text());
+    if(!confirm('Importer '+rows.length+' intervention(s) dans ton compte sécurisé ? Les lignes déjà importées seront mises à jour.'))return;
+    const count=await importRows(rows);
+    alert(count+' intervention(s) synchronisée(s).');
+  }catch(err){alert('Import impossible : '+err.message)}finally{e.target.value=''}
+}
+function preview(){txt('f-preview',money(numeric($('f-qty').value)*numeric($('f-price').value)))}
+$('f-date').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+for(const id of ['f-qty','f-price'])$(id).addEventListener('input',preview);
+$('auth-form').addEventListener('submit',submitAuth);
+$('auth-mode-btn').addEventListener('click',()=>setAuthMode(authMode==='login'?'signup':'login'));
+$('sign-out').addEventListener('click',async()=>{if(!client)return;await client.auth.signOut();signedOutUI()});
+$('sync-now').addEventListener('click',()=>refreshRows(false));
+$('demo-m').addEventListener('click',()=>{demo=!demo;txt('demo-m',demo?'Quitter la démo':'Aperçu démo');renderM()});
+$('clear-m').remove();
+$('a-form').addEventListener('submit',async e=>{
+  e.preventDefault();if(!activeUser||activeRole!=='a')return;
+  const btn=$('a-form').querySelector('[type=submit]');btn.disabled=true;txt('a-msg','Enregistrement…');
+  try{
+    const row=cleanRow({date:$('f-date').value,type:$('f-type').value,qty:$('f-qty').value,unitPrice:$('f-price').value,km:$('f-km').value,tolls:$('f-tolls').value,consumption:$('f-cons').value,fuelPrice:$('f-fuel-price').value});
+    const {error}=await client.from('interventions').insert(toDB(row));
+    if(error)throw error;
+    await refreshRows(true);
+    txt('a-msg','✓ Intervention sauvegardée et synchronisée');
+    $('f-type').value='';$('f-qty').value=1;$('f-price').value='';$('f-km').value=0;$('f-tolls').value=0;preview();
+  }catch(error){txt('a-msg','Erreur : '+error.message)}finally{btn.disabled=false}
+});
+$('a-export').addEventListener('click',()=>download('fibree-anais-sauvegarde.json',{version:1,rows:aRows}));
+$('a-import').addEventListener('change',uploadFileEvent);
+$('import-m').addEventListener('change',uploadFileEvent);
+$('import-legacy').addEventListener('click',async()=>{
+  if(!activeUser)return;
+  const old=safeReadLegacy();if(!old.length)return;
+  if(!confirm('Importer '+old.length+' ancienne(s) intervention(s) vers ton compte Supabase ? Les données locales seront conservées.'))return;
+  try{
+    const count=await importRows(old.map(cleanRow));
+    localStorage.setItem('fibree.migrated.'+activeUser.id+'.'+activeRole,'yes');
+    showLegacyBanner();alert(count+' intervention(s) importée(s).');
+  }catch(e){alert('Erreur d’import : '+e.message)}
+});
+if(!client){txt('auth-message','Impossible de charger Supabase. Vérifie Internet et recharge le site.');}
+else {
+  client.auth.getSession().then(({data,error})=>{
+    if(error)throw error;
+    if(data.session?.user)return bootstrap(data.session.user);
+    signedOutUI();
+  }).catch(e=>txt('auth-message','Erreur de session : '+e.message));
+  client.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_OUT')signedOutUI();
+    if(event==='SIGNED_IN'&&session?.user&&activeUser?.id!==session.user.id){setTimeout(()=>bootstrap(session.user),0)}
+  });
+  setInterval(()=>{if(activeUser&&!document.hidden)refreshRows(true)},45000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&activeUser)refreshRows(true)});
+}
+
+</script>
+</body>
+</html>
