@@ -33,6 +33,41 @@ body.signed-out .layout{display:none !important}
 .logout-btn{margin-left:11px;background:transparent;border:1px solid #dce2ef;border-radius:8px;color:#63718a;padding:8px 10px;font-size:12px}
 .logout-btn:hover{background:#eeeefd}
 @media(max-width:650px){.auth-card{padding:23px;border-radius:17px}.logout-btn{margin-left:0;font-size:11px}.sync-toolbar{margin-top:10px}}
+
+/* Choix BPU Anaïs */
+.field select{border:1px solid #dce2ee;border-radius:10px;background:#fff;padding:11px 13px;min-height:44px;color:#1f2b45;width:100%;font:inherit}
+.tariff-note{font-size:12px;line-height:1.5;color:#626e83;background:#f3f5fd;border:1px solid #e0e5f4;padding:10px 13px;border-radius:10px;margin:11px 0 3px}
+.tariff-note.warning-rate{color:#9e541f;background:#fff7ed;border-color:#ffdfbf}
+
+/* Compte invité Anaïs et stockage privé des photos Bouygues */
+.auth-guest{width:100%;padding:13px 14px;margin:8px 0 3px;border:1px solid #d1daf0;background:#f4f2ff;color:#483bb7;border-radius:12px;font-weight:800;font:inherit;cursor:pointer}
+.auth-guest:disabled{opacity:.55;cursor:wait}
+.guest-explainer{font-size:11px;color:#6c7890;line-height:1.5;margin:6px 0 3px}
+.photo-drop{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 21px;flex-wrap:wrap;border-radius:15px;background:#f5f7fc;border:1px dashed #cfd7e7;margin:6px 21px 12px}
+.photo-drop strong{font-size:15px}.photo-drop p{line-height:1.5;color:#78869a;margin:4px 0 0;max-width:600px}
+.capture-feedback{min-height:17px;color:#5b6c86;margin:0 22px 10px;font-size:12px}
+.capture-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:12px;padding:0 21px 22px}
+.capture-item{border:1px solid #e2e8f2;border-radius:13px;overflow:hidden;background:#fff}
+.capture-item img{display:block;width:100%;height:116px;object-fit:cover;cursor:pointer}
+.capture-item .capture-details{padding:8px 9px;display:flex;justify-content:space-between;gap:5px;align-items:center;color:#72819a;font-size:11px}
+.capture-item button{cursor:pointer;border:0;background:transparent;color:#a74e51;font-size:12px;padding:4px}
+@media(max-width:620px){.photo-drop{margin:6px 12px 12px;padding:14px}.capture-grid{padding:0 12px 16px;grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Lecture locale des captures : Anaïs valide AVANT insertion en base. */
+.ocr-review{margin:20px 0 22px;border:1px solid #cbc6fc;background:linear-gradient(120deg,#fff,#f9f8ff)}
+.ocr-review .review-body{padding:18px 22px 22px}
+.ocr-layout{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:20px;align-items:start}
+.ocr-picture{width:100%;height:236px;object-fit:contain;background:#f1f3fa;border-radius:12px;border:1px solid #e3e5ee}
+.ocr-review h3{margin:2px 0 8px;font-size:18px}
+.ocr-review p{margin:7px 0;line-height:1.55;color:#607086}
+.ocr-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0 0}
+.ocr-controls button{padding:10px 14px}
+.ocr-warnings{margin:12px 0;padding:10px 12px;background:#fff7ed;color:#8c4b14;border-radius:9px;border:1px solid #f4d8b8;font-size:13px}
+.ocr-warning-lines{margin:0;padding-left:16px}
+.ocr-note{font-size:12px!important}
+.ocr-status{padding:0 22px 18px;color:#5d55ad;font-size:13px;line-height:1.6}
+.ocr-pending{display:inline-block;border-radius:20px;padding:5px 9px;background:#eeecff;color:#675ac8;font-weight:700;font-size:12px}
+@media(max-width:590px){.ocr-layout{grid-template-columns:1fr}.ocr-picture{height:205px}.ocr-review .review-body{padding:15px}}
 </style>
 </head>
 <body class="signed-out">
@@ -47,6 +82,8 @@ body.signed-out .layout{display:none !important}
       <label class="auth-field">Mot de passe<input id="auth-password" type="password" minlength="8" autocomplete="current-password" required placeholder="8 caractères minimum"></label>
       <button class="auth-submit" id="auth-submit" type="submit">Me connecter</button>
       <button class="auth-switch" id="auth-mode-btn" type="button">Créer un compte</button>
+      <button class="auth-guest" id="auth-guest" type="button">Entrer dans l’espace Anaïs sans mot de passe</button>
+      <p class="guest-explainer">Accès invité sur cet appareil : chacun conserve son propre espace. Pour un accès permanent sur plusieurs appareils, un compte personnel reste conseillé.</p>
       <p class="auth-message" role="status" aria-live="polite" id="auth-message"></p>
     </form>
     <p class="auth-notice">Connexion sécurisée par Supabase · Données séparées par utilisateur · Aucun mot de passe envoyé à ChatGPT.</p>
@@ -60,7 +97,7 @@ body.signed-out .layout{display:none !important}
       <button type="button" class="nav-button active" data-go="m" aria-pressed="true"><span class="avatar mavatar">M</span><span><b>Mohamed</b><small>Suivi des interventions</small></span><span class="nav-arrow">›</span></button>
       <button type="button" class="nav-button" data-go="a" aria-pressed="false"><span class="avatar aavatar">A</span><span><b>Anaïs</b><small>Saisie manuelle</small></span><span class="nav-arrow">›</span></button>
     </nav>
-    <div class="sidefoot"><div class="state"><span class="statusdot"></span>Base Supabase sécurisée</div><p>Chacun se connecte à son compte. Les données ne sont pas visibles par les autres utilisateurs.</p></div>
+    <div class="sidefoot"><div class="state"><span class="statusdot"></span>Base Supabase sécurisée</div><p>Chaque espace est séparé et privé. L’accès invité Anaïs reste associé au navigateur qui l’a créé.</p></div>
   </aside>
   <div class="main">
     <header class="top"><div class="crumb">FIBREE <span>/</span> <strong id="crumb-name">MOHAMED</strong></div><div class="topright"><span class="pulse"></span><span id="sync-text">Connexion…</span><span class="profile" id="top-profile">M</span><button class="logout-btn" id="sign-out" type="button">Déconnexion</button></div></header>
@@ -69,18 +106,99 @@ body.signed-out .layout{display:none !important}
       <div id="legacy-banner" class="warning info legacy-import hidden" role="status"><span>ⓘ</span><div><b>Anciennes données trouvées sur cet appareil : <span id="legacy-count">0</span> intervention(s).</b><p>Tu peux les importer une seule fois dans ton compte sécurisé. Rien ne sera effacé du navigateur.</p></div><button class="btn btn-dark" type="button" id="import-legacy">Importer</button></div>
       <section id="page-m">
         <div class="hero"><div><div class="eyebrow">SUIVI QUOTIDIEN</div><h1>Bonjour, Mohamed <span class="spark">✳</span></h1><p>Interventions, kilomètres et frais de déplacement au même endroit.</p></div><div class="actions"><label class="btn btn-dark filelabel">↑ Importer mon suivi<input id="import-m" type="file" accept=".json,application/json"></label><button class="btn" type="button" id="demo-m">Aperçu démo</button><button class="btn" type="button" id="clear-m">Effacer les données locales</button></div></div>
-        <div class="warning info"><span>ⓘ</span><div><b>Synchronisation automatique activée.</b><p>Les interventions de ce compte sont stockées dans Supabase et actualisées automatiquement. Les captures envoyées à ChatGPT pourront être ajoutées à ce compte après identification.</p></div></div>
+        <div class="warning info"><span>ⓘ</span><div><b>Synchronisation automatique activée.</b><p>Les interventions de ce compte sont stockées dans Supabase et actualisées automatiquement. Les captures déposées sur ce site sont archivées dans votre espace privé ; elles ne sont pas automatiquement analysées par ChatGPT.</p></div></div>
         <div class="warning hidden" id="demo-note"><span>⚠</span><div><b>Données de démonstration fictives.</b><p>Ces montants n'ont aucun rapport avec tes interventions réelles.</p></div></div>
         <div class="metrics"><article class="metric"><div class="metric-head">CHIFFRE D'AFFAIRES <span class="symbol">↗</span></div><div class="metric-val" id="m-ca">—</div><div class="metric-foot">Montant HT enregistré</div></article><article class="metric"><div class="metric-head">INTERVENTIONS <span class="symbol">▣</span></div><div class="metric-val" id="m-count">—</div><div class="metric-foot">Prestations cumulées</div></article><article class="metric"><div class="metric-head">KILOMÈTRES <span class="symbol">⌁</span></div><div class="metric-val" id="m-km">—</div><div class="metric-foot">Distance totale</div></article><article class="metric"><div class="metric-head">FRAIS DE ROUTE <span class="symbol">◈</span></div><div class="metric-val" id="m-road">—</div><div class="metric-foot">Carburant et péages</div></article></div>
         <div class="twocol"><article class="card"><div class="card-head"><div><div class="overline">ACTIVITÉ</div><h2>Chiffre d'affaires par journée</h2></div><span class="chip">Journalier</span></div><div class="chartarea" id="m-chart"><div class="empty"><span class="emptyicon">▥</span><strong>Aucune journée chargée</strong><p>Tes récapitulatifs apparaîtront ici à la première mise à jour.</p></div></div></article><article class="card"><div class="card-head"><div><div class="overline">BILAN</div><h2>Récapitulatif général</h2></div><span class="chip">Total</span></div><div class="breakdown"><div class="line"><span>Chiffre d'affaires HT</span><strong id="m-total-ca">—</strong></div><div class="line"><span>Carburant estimé</span><strong id="m-fuel">—</strong></div><div class="line"><span>Péages</span><strong id="m-tolls">—</strong></div><div class="line total"><span>Après frais de route</span><strong id="m-net">—</strong></div></div><div class="hint">Indicateur après frais de déplacement, hors matériel, charges sociales et impôts.</div></article></div>
+
+        <article class="card tablecard capture-card">
+          <div class="card-head"><div><div class="overline">JUSTIFICATIFS</div><h2>Captures d’interventions Bouygues</h2></div><span class="chip">Privé</span></div>
+          <div class="photo-drop">
+            <div><strong>Envoyer un screen Bouygues</strong><p>Captures FFS, SOG et interventions. Une lecture automatique locale préremplit les prestations ; Anaïs corrige puis valide. Images privées, aucun enregistrement de prestation sans validation.</p></div>
+            <label class="btn btn-dark filelabel">↑ Ajouter des captures<input id="capture-upload-m" type="file" accept="image/png,image/jpeg,image/webp" multiple></label>
+          </div>
+          <p class="capture-feedback" id="capture-status-m" role="status" aria-live="polite"></p>
+          <div class="capture-grid" id="capture-grid-m"><p class="note">Aucune capture pour le moment.</p></div>
+        </article>
         <article class="card tablecard"><div class="card-head"><div><div class="overline">HISTORIQUE</div><h2>Détail des journées</h2></div><span class="chip" id="m-days">0 jour</span></div><div class="scroller"><table><thead><tr><th>DATE</th><th>INTERVENTIONS</th><th>KM</th><th>CARBURANT</th><th>PÉAGES</th><th>CA HT</th><th>APRÈS TRAJET</th></tr></thead><tbody id="m-table"><tr><td class="emptytable" colspan="7">Aucune journée renseignée.</td></tr></tbody></table></div></article>
         <p class="note" id="m-note">Aucune donnée personnelle n'est inscrite dans le code public du site.</p>
       </section>
       <section id="page-a" class="hidden">
         <div class="hero"><div><div class="eyebrow">ESPACE PERSONNEL</div><h1>Bonjour, Anaïs <span class="spark">✳</span></h1><p>Enregistre chaque prestation et laisse le tableau faire les calculs.</p></div><div class="actions"><button class="btn btn-dark" id="a-export" type="button">↓ Exporter mon suivi</button><label class="btn filelabel">↑ Importer<input type="file" id="a-import" accept=".json,application/json"></label></div></div>
-        <div class="warning"><span>ⓘ</span><div><b>Enregistrement en ligne sécurisé.</b><p>Chaque intervention est sauvegardée dans Supabase dès que tu valides le formulaire. Tu peux consulter ton suivi depuis un autre appareil avec tes identifiants.</p></div></div>
+        <div class="warning"><span>ⓘ</span><div><b>Enregistrement en ligne sécurisé.</b><p>Chaque intervention est sauvegardée dans Supabase. En mode invité sans mot de passe, utilise le même navigateur pour retrouver les données ; un compte personnel est nécessaire pour changer d’appareil facilement.</p></div></div>
         <div class="metrics"><article class="metric"><div class="metric-head">CHIFFRE D'AFFAIRES <span class="symbol">↗</span></div><div class="metric-val" id="a-ca">0 €</div><div class="metric-foot">Montant HT cumulé</div></article><article class="metric"><div class="metric-head">INTERVENTIONS <span class="symbol">▣</span></div><div class="metric-val" id="a-count">0</div><div class="metric-foot">Prestations cumulées</div></article><article class="metric"><div class="metric-head">KILOMÈTRES <span class="symbol">⌁</span></div><div class="metric-val" id="a-km">0 km</div><div class="metric-foot">Distance cumulée</div></article><article class="metric"><div class="metric-head">APRÈS FRAIS ROUTE <span class="symbol">◈</span></div><div class="metric-val" id="a-net">0 €</div><div class="metric-foot">Hors matériel et charges</div></article></div>
-        <div class="twocol"><article class="card"><div class="card-head"><div><div class="overline">NOUVELLE ENTRÉE</div><h2>Ajouter une intervention</h2></div><span class="chip">Manuel</span></div><form id="a-form"><div class="formgrid"><label class="field">Date<input type="date" id="f-date" required></label><label class="field">Type d'intervention<input id="f-type" type="text" maxlength="100" placeholder="Ex. RACC pavillon aérien" required></label><label class="field">Quantité<input id="f-qty" type="number" min="1" step="1" value="1" required></label><label class="field">Tarif unitaire HT (€)<input id="f-price" type="number" min="0" step="0.01" placeholder="Ex. 172" required></label><label class="field">Kilomètres<input id="f-km" type="number" min="0" step="0.1" value="0" required></label><label class="field">Péages (€)<input id="f-tolls" type="number" min="0" step="0.01" value="0" required></label></div><details class="parameters"><summary>Modifier les paramètres carburant</summary><div class="formgrid"><label class="field">Consommation (L/100 km)<input id="f-cons" type="number" min="0" max="100" step="0.1" value="15" required></label><label class="field">Prix du gazole (€/L)<input id="f-fuel-price" type="number" min="0" step="0.01" value="2.4" required></label></div></details><div class="preview"><span>Chiffre d'affaires de cette entrée</span><strong id="f-preview">0,00 €</strong></div><button class="btn btn-primary formsubmit" type="submit">+ Enregistrer l'intervention</button><p class="feedback" id="a-msg" role="status"></p></form></article><article class="card"><div class="card-head"><div><div class="overline">CALCUL AUTOMATIQUE</div><h2>Ton récapitulatif</h2></div><span class="chip">Cumul</span></div><div class="breakdown"><div class="line"><span>Chiffre d'affaires HT</span><strong id="a-total-ca">0 €</strong></div><div class="line"><span>Carburant estimé</span><strong id="a-fuel">0 €</strong></div><div class="line"><span>Péages</span><strong id="a-tolls">0 €</strong></div><div class="line total"><span>Après frais de route</span><strong id="a-total-net">0 €</strong></div></div><div class="hint">Chaque ligne utilise sa propre consommation et son prix au litre. Les calculs se font immédiatement à l'enregistrement.</div></article></div>
+        <article class="card ocr-review hidden" id="ocr-review" aria-labelledby="ocr-heading">
+          <div class="card-head"><div><div class="overline">CAPTURE ANALYSÉE</div><h2 id="ocr-heading">Anaïs vérifie avant validation</h2></div><span class="ocr-pending" id="ocr-counter">1 / 1</span></div>
+          <div class="review-body">
+            <div class="ocr-layout">
+              <img class="ocr-picture" id="ocr-picture" alt="Capture à contrôler" />
+              <div><h3 id="ocr-title">Proposition de prestation</h3><p id="ocr-summary"></p>
+                <div class="ocr-warnings" id="ocr-warnings"><ul class="ocr-warning-lines" id="ocr-warning-lines"></ul></div>
+                <p class="ocr-note">Texte détecté sur ton appareil : la capture n’est pas envoyée à un service d’OCR externe. Le tarif Orange proposé est une correspondance indicative, pas nécessairement le tarif Bouygues.</p>
+              </div>
+            </div>
+            <div class="ocr-controls">
+              <button type="button" id="ocr-prev" class="btn btn-secondary">← Précédent</button>
+              <button type="button" id="ocr-next" class="btn btn-secondary">Suivant →</button>
+              <button type="button" id="ocr-fill" class="btn btn-dark">Vérifier / modifier dans le formulaire</button>
+              <button type="button" id="ocr-ignore" class="btn btn-secondary">Ignorer cette proposition</button>
+            </div>
+          </div>
+        </article>
+        <div class="twocol"><article class="card"><div class="card-head"><div><div class="overline">NOUVELLE ENTRÉE</div><h2>Ajouter une intervention</h2></div><span class="chip" id="draft-badge">Manuel</span></div><form id="a-form">
+  <div class="formgrid">
+    <label class="field">Date<input type="date" id="f-date" required></label>
+    <label class="field">Référence SOG / intervention<input id="f-reference" type="text" maxlength="120" placeholder="Ex. SOG-0023773883"></label>
+    <label class="field">Barème<select id="f-provider" required>
+      <option value="orange">Orange · BPU 2025-10</option>
+      <option value="formatel">Formatel · comparatif transmis</option>
+      <option value="manual">Tarif manuel</option>
+    </select></label>
+    <label class="field">Famille d'intervention<select id="f-group" required>
+      <option value="aerien">Raccordement aérien</option>
+      <option value="souterrain">Raccordement souterrain</option>
+      <option value="immeuble">Raccordement immeuble</option>
+      <option value="sav">SAV · dont F03 / F04</option>
+      <option value="plp">PLP / service</option>
+      <option value="autre">Autre prestation</option>
+    </select></label>
+    <label class="field">Prestation / code BPU<select id="f-code" required></select></label>
+    <label class="field">Expert ?<select id="f-expert" required><option value="no">Non expert</option><option value="yes">Expert</option></select></label>
+    <label class="field" id="f-pricing-wrap">Calcul tarif Formatel<select id="f-pricing">
+      <option value="minus25">Formatel -25 % (net du comparatif)</option>
+      <option value="minus25minus5">Formatel -25 % puis -5 %</option>
+      <option value="gross">Formatel brut (sans déduction)</option>
+    </select></label>
+    <label class="field hidden" id="f-custom-wrap">Libellé de la prestation<input id="f-custom" maxlength="100" placeholder="Nom de la prestation"></label>
+    <label class="field">Quantité<input id="f-qty" type="number" min="1" max="1000" step="1" value="1" required></label>
+    <label class="field">Tarif unitaire HT (€)<input id="f-price" type="number" min="0" step="0.01" placeholder="Prix à renseigner" required></label>
+    <label class="field">Kilomètres<input id="f-km" type="number" min="0" step="0.1" value="0" required></label>
+    <label class="field">Péages (€)<input id="f-tolls" type="number" min="0" step="0.01" value="0" required></label>
+  </div>
+  <p class="tariff-note" id="f-price-note" role="status">Tarif calculé à partir du BPU sélectionné. Le tarif reste modifiable.</p>
+  <details class="parameters"><summary>Modifier les paramètres carburant</summary><div class="formgrid">
+    <label class="field">Consommation (L/100 km)<input id="f-cons" type="number" min="0" max="100" step="0.1" value="15" required></label>
+    <label class="field">Prix du gazole (€/L)<input id="f-fuel-price" type="number" min="0" step="0.01" value="2.4" required></label>
+  </div></details>
+  <div class="preview"><span>Chiffre d'affaires de cette entrée</span><strong id="f-preview">0,00 €</strong></div>
+  <button class="btn btn-primary formsubmit" type="submit">+ Enregistrer l'intervention</button>
+  <p class="feedback" id="a-msg" role="status"></p>
+</form></article><article class="card"><div class="card-head"><div><div class="overline">CALCUL AUTOMATIQUE</div><h2>Ton récapitulatif</h2></div><span class="chip">Cumul</span></div><div class="breakdown"><div class="line"><span>Chiffre d'affaires HT</span><strong id="a-total-ca">0 €</strong></div><div class="line"><span>Carburant estimé</span><strong id="a-fuel">0 €</strong></div><div class="line"><span>Péages</span><strong id="a-tolls">0 €</strong></div><div class="line total"><span>Après frais de route</span><strong id="a-total-net">0 €</strong></div></div><div class="hint">Chaque ligne utilise sa propre consommation et son prix au litre. Les calculs se font immédiatement à l'enregistrement.</div></article></div>
+        <article class="card tablecard"><div class="card-head"><div><div class="overline">DÉTAIL DU CHIFFRE D’AFFAIRES</div><h2>Récapitulatif par prestation et barème</h2></div><span class="chip">Anaïs uniquement</span></div>
+          <div class="scroller"><table><thead><tr><th>PRESTATION / CODE</th><th>BARÈME</th><th>EXPERT</th><th>QTÉ</th><th>CA HT</th></tr></thead><tbody id="a-breakdown"><tr><td colspan="5" class="emptytable">Aucune prestation enregistrée.</td></tr></tbody></table></div>
+          <p class="note">Tarifs issus du comparatif Orange 2025-10 / Formatel fourni. Les codes F03/F04 et l'option Expert n'ont pas de majoration automatique faute de tarif vérifié.</p>
+        </article>
+
+        <article class="card tablecard capture-card">
+          <div class="card-head"><div><div class="overline">JUSTIFICATIFS</div><h2>Captures d’interventions Bouygues</h2></div><span class="chip">Privé</span></div>
+          <div class="photo-drop">
+            <div><strong>Envoyer un screen Bouygues</strong><p>Captures FFS, SOG et interventions. Une lecture automatique locale préremplit les prestations ; Anaïs corrige puis valide. Images privées, aucun enregistrement de prestation sans validation.</p></div>
+            <label class="btn btn-dark filelabel">↑ Ajouter des captures<input id="capture-upload-a" type="file" accept="image/png,image/jpeg,image/webp" multiple></label>
+          </div>
+          <p class="capture-feedback" id="capture-status-a" role="status" aria-live="polite"></p>
+          <p class="ocr-status" id="ocr-status" role="status" aria-live="polite">Lecture automatique sur cet appareil. Une capture avec plusieurs SOG peut produire plusieurs propositions : Anaïs valide chacune séparément.</p>
+          <div class="capture-grid" id="capture-grid-a"><p class="note">Aucune capture pour le moment.</p></div>
+        </article>
         <article class="card tablecard"><div class="card-head"><div><div class="overline">HISTORIQUE</div><h2>Mes interventions</h2></div><span class="chip" id="a-days">0 entrée</span></div><div class="scroller"><table><thead><tr><th>DATE</th><th>PRESTATION</th><th>QTÉ</th><th>KM</th><th>CARBURANT</th><th>PÉAGES</th><th>CA HT</th><th></th></tr></thead><tbody id="a-table"><tr><td colspan="8" class="emptytable">Aucune intervention pour le moment.</td></tr></tbody></table></div></article>
       </section>
       <footer class="footer"><span>© FIBREE · Suivi d'activité</span><span>Synchronisation Supabase · Multi-appareils</span></footer>
@@ -88,6 +206,7 @@ body.signed-out .layout{display:none !important}
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
 'use strict';
 // Supabase publishable keys are designed for public browser clients. Security is enforced by RLS.
@@ -110,16 +229,265 @@ function cleanRow(r){
   const price=numeric(r.unitPrice),qty=Math.max(1,Math.round(numeric(r.qty??1))),km=numeric(r.km),tolls=numeric(r.tolls),consumption=numeric(r.consumption??15),fuelPrice=numeric(r.fuelPrice??2.4);
   if([price,qty,km,tolls,consumption,fuelPrice].some(v=>v>1e7)||qty>1000||km>1e6||tolls>1e6)throw Error('Valeur trop grande');
   if(consumption>100||fuelPrice>100)throw Error('Paramètres de carburant incorrects');
-  return {id:String(r.id||crypto.randomUUID()),date:r.date,type:String(r.type||'Intervention').slice(0,160),reference:r.reference?String(r.reference).slice(0,120):null,qty,unitPrice:price,km,tolls,consumption,fuelPrice};
+  return {id:String(r.id||crypto.randomUUID()),date:r.date,type:String(r.type||'Intervention').slice(0,160),reference:r.reference?String(r.reference).slice(0,120):null,qty,unitPrice:price,km,tolls,consumption,fuelPrice,
+    billingProvider:['orange','formatel','manual'].includes(r.billingProvider)?r.billingProvider:null,
+    billingCode:r.billingCode?String(r.billingCode).slice(0,40):null,
+    billingExpert:r.billingExpert===true,
+    billingPricing:['gross','minus25','minus25minus5','standard','manual'].includes(r.billingPricing)?r.billingPricing:null};
 }
 function toDB(r,legacyImportId=null){return {
   user_id:activeUser.id,work_date:r.date,intervention_type:r.type,reference:r.reference||null,
   quantity:r.qty,unit_price_ht:r.unitPrice,kilometers:r.km,
   consumption_l100:r.consumption,fuel_eur_l:r.fuelPrice,tolls_eur:r.tolls,
-  legacy_import_id:legacyImportId
+  legacy_import_id:legacyImportId,
+  billing_provider:r.billingProvider||null,billing_code:r.billingCode||null,
+  billing_expert:r.billingExpert===true,billing_pricing:r.billingPricing||null
 }}
-function fromDB(r){return {id:r.id,date:r.work_date,type:r.intervention_type,reference:r.reference||null,qty:Number(r.quantity),unitPrice:Number(r.unit_price_ht),km:Number(r.kilometers),consumption:Number(r.consumption_l100),fuelPrice:Number(r.fuel_eur_l),tolls:Number(r.tolls_eur)}}
+function fromDB(r){return {id:r.id,date:r.work_date,type:r.intervention_type,reference:r.reference||null,qty:Number(r.quantity),unitPrice:Number(r.unit_price_ht),km:Number(r.kilometers),consumption:Number(r.consumption_l100),fuelPrice:Number(r.fuel_eur_l),tolls:Number(r.tolls_eur),
+  billingProvider:r.billing_provider||null,billingCode:r.billing_code||null,
+  billingExpert:r.billing_expert===true,billingPricing:r.billing_pricing||null}}
 function totals(rows){return rows.reduce((s,r)=>{s.ca+=r.qty*r.unitPrice;s.count+=r.qty;s.km+=r.km;s.fuel+=r.km*r.consumption/100*r.fuelPrice;s.tolls+=r.tolls;return s},{ca:0,count:0,km:0,fuel:0,tolls:0})}
+
+// Les captures sont stockées dans un bucket PRIVÉ, sous le préfixe du uid connecté.
+const CAPTURE_BUCKET='fibree-captures';
+function captureStatus(message){for(const role of ['m','a'])txt('capture-status-'+role,message)}
+async function refreshCaptures(){
+  if(!client||!activeUser)return;
+  const role=activeRole,userId=activeUser.id,view=$('capture-grid-'+role);
+  view.replaceChildren();captureStatus('Chargement des captures…');
+  const bucket=client.storage.from(CAPTURE_BUCKET);
+  const {data,error}=await bucket.list(userId,{limit:100,sortBy:{column:'created_at',order:'desc'}});
+  if(!activeUser||activeUser.id!==userId||activeRole!==role)return;
+  if(error){captureStatus('Chargement des captures impossible : '+error.message);return}
+  const files=(data||[]).filter(f=>f.name&&!f.name.startsWith('.')&&f.id);
+  if(!files.length){view.innerHTML='<p class="note">Aucune capture enregistrée.</p>';captureStatus('Aucune image enregistrée.');return}
+  captureStatus(files.length+' capture(s) dans ton espace privé.');
+  for(const f of files.slice(0,30)){
+    const path=userId+'/'+f.name;
+    const item=document.createElement('div');item.className='capture-item';
+    const image=document.createElement('img');image.alt='Capture Bouygues';image.loading='lazy';
+    const {data:signed,error:signError}=await bucket.createSignedUrl(path,600);
+    if(signError||!signed?.signedUrl)continue;
+    image.src=signed.signedUrl;
+    image.addEventListener('click',()=>window.open(signed.signedUrl,'_blank','noopener'));
+    const details=document.createElement('div');details.className='capture-details';
+    const date=document.createElement('span');date.textContent=f.created_at?new Date(f.created_at).toLocaleDateString('fr-FR'):'Image';
+    const remove=document.createElement('button');remove.type='button';remove.textContent='Suppr.';remove.setAttribute('aria-label','Supprimer cette capture');
+    remove.addEventListener('click',async()=>{
+      if(!confirm('Supprimer cette capture définitivement ?'))return;
+      const {error:e}=await bucket.remove([path]);
+      if(e)captureStatus('Suppression impossible : '+e.message);
+      else await refreshCaptures();
+    });
+    if(role==='a'){
+      const again=document.createElement('button');again.type='button';again.textContent='Préremplir';again.setAttribute('aria-label','Analyser cette capture pour préremplir');
+      again.addEventListener('click',async()=>{
+        again.disabled=true;
+        try{
+          const res=await fetch(signed.signedUrl,{mode:'cors'});
+          if(!res.ok)throw Error('Impossible de lire la capture');
+          const b=await res.blob();
+          await analyseCapture(new File([b],f.name,{type:b.type||'image/png'}),signed.signedUrl);
+        }catch(e){txt('ocr-status','Lecture impossible : '+e.message)}finally{again.disabled=false;await releaseOcrWorker()}
+      });details.append(again);
+    }
+    details.append(date,remove);item.append(image,details);view.append(item);
+  }
+}
+
+// ----- OCR FFS en local dans le navigateur (aucun OCR serveur) -----
+const ocrSuggestions=[];
+let ocrCurrent=-1, ocrWorkerPromise=null, ocrBusy=false;
+const scanNorm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[’]/g,"'");
+function dateFromScan(s){
+  const text=String(s||'');
+  let m=text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+  if(m){const iso=m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+    if(Number.isFinite(Date.parse(iso))&&new Date(iso+'T12:00:00').getDate()===Number(m[3]))return iso;}
+  m=text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2})\b/);
+  if(m){const iso=m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+    if(Number.isFinite(Date.parse(iso))&&new Date(iso+'T12:00:00').getDate()===Number(m[1]))return iso;}
+  const n=scanNorm(text);
+  m=n.match(/\b(\d{1,2})\s+(JANV(?:IER)?|FEVR(?:IER)?|MARS|AVR(?:IL)?|MAI|JUIN|JUIL(?:LET)?|AOUT|SEPT(?:EMBRE)?|OCT(?:OBRE)?|NOV(?:EMBRE)?|DEC(?:EMBRE)?)\s+(20\d{2})\b/);
+  if(m){const names=['JANV','FEVR','MARS','AVR','MAI','JUIN','JUIL','AOUT','SEPT','OCT','NOV','DEC'];const month=names.findIndex(x=>m[2].startsWith(x));
+    if(month>=0)return m[3]+'-'+String(month+1).padStart(2,'0')+'-'+m[1].padStart(2,'0');}
+  return null;
+}
+function codeFromScan(s){
+  const n=scanNorm(s);
+  const e=n.match(/\b(LSAF[12]|LSA[12]|LSOU[12]|LSIM[12]|SAVA[12]|F0[34]|PLPF?[12]|PSER[12])\b/);
+  if(e){let code=e[1].replace(/^LSA([12])$/,'LSAF$1').replace(/^PLPF([12])$/,'PLP$1');
+    if(ANA_TARIFFS[code])return {code,source:'Code BPU reconnu sur la capture',certain:true};}
+  let code='OTHER',source='Type non identifié automatiquement';
+  if(/\bF\s*0?3\b/.test(n)) {code='F03';source='SAV F03 détecté';}
+  else if(/\bF\s*0?4\b/.test(n)){code='F04';source='SAV F04 détecté';}
+  else if(/\b(SAV|DEPANNAGE|INCIDENT|REPARATION)\b/.test(n)){code='SAVA1';source='SAV détecté, palier 1 proposé';}
+  else if(/\b(PLP|MISE EN SERVICE)\b/.test(n)){code='PLP1';source='PLP détecté, palier 1 proposé';}
+  else if(/\b(SOUTERRAIN|FOURREAU|SOUT)\b/.test(n)){code='LSOU1';source='Souterrain détecté, palier 1 proposé';}
+  else if(/\b(IMMEUBLE|COLLECTIF)\b/.test(n)){code='LSIM1';source='Immeuble détecté, palier 1 proposé';}
+  else if(/\b(AERIEN|NACELLE|POTEAU|FACADE)\b/.test(n)){code='LSAF1';source='Aérien détecté, palier 1 proposé';}
+  const palier2=/\bPALIER\s*(?:2|II)\b/.test(n);
+  if(palier2){const p2=code.replace(/1$/,'2');if(ANA_TARIFFS[p2]){code=p2;source+=' (palier 2 indiqué)';}}
+  return {code,source,certain:false};
+}
+function screenshotsToDrafts(raw,imageUrl,fileName){
+  const text=String(raw||'').trim(),sogs=[];
+  // SOG suivi d'une série numérique ; OCR peut confondre O avec 0.
+  const rex=/\bSOG[\s:#-]*([0O]{1,3}[0-9OI]{7,12})\b|\b(00[0-9]{7,12})\b/gi;
+  let m;
+  while((m=rex.exec(text))!==null){
+    const digits=(m[1]||m[2]||'').replace(/[O]/gi,'0').replace(/[I]/gi,'1');
+    if(digits.length<9||digits.length>15||sogs.some(x=>x.sog===digits))continue;
+    sogs.push({index:m.index,sog:digits});
+    if(sogs.length>=20)break;
+  }
+  const commonDate=dateFromScan(text);
+  const chunks=sogs.length?sogs.map((item,i)=>({sog:item.sog,chunk:text.slice(i?item.index:0,i===sogs.length-1?text.length:sogs[i+1].index)})):[{sog:'',chunk:text}];
+  return chunks.map(({sog,chunk})=>{
+    const matched=codeFromScan(chunk),def=ANA_TARIFFS[matched.code];
+    const n=scanNorm(chunk);
+    const expert=/\bNON[\s-]*EXPERT\b/.test(n)?false:/\bEXPERT\b/.test(n)?true:null;
+    const date=dateFromScan(chunk)||commonDate;
+    const warnings=[];
+    if(!sog)warnings.push('Aucun numéro SOG fiable trouvé : indique la référence si disponible.');
+    if(!date)warnings.push('Date non reconnue : vérifie la date proposée.');
+    if(matched.code==='OTHER')warnings.push('Prestation non reconnue : choisis la famille et le code manuellement.');
+    else if(!matched.certain&& !/\bPALIER\s*(?:1|2|I|II)\b/.test(n))warnings.push('Palier 1 proposé par défaut : vérifie les conditions de facturation Orange.');
+    if(expert===null)warnings.push('Expert / non expert non indiqué : vérifier.');
+    if(def?.orange==null)warnings.push('Tarif F03/F04 ou autre inconnu : prix HT à saisir manuellement.');
+    warnings.push('Correspondance Orange indicative : une capture Bouygues ne garantit pas ce tarif Orange.');
+    warnings.push('Kilomètres et péages non déduits : vérifier les champs avant validation.');
+    return {sog,date,code:matched.code,expert,reason:matched.source,warnings,fileName,sourceText:chunk.slice(0,1200),imageUrl,imageFile:fileName};
+  });
+}
+async function getOcrWorker(){
+  if(!window.Tesseract?.createWorker)throw Error('Lecture OCR indisponible : connexion nécessaire au téléchargement du moteur.');
+  if(!ocrWorkerPromise){
+    ocrWorkerPromise=window.Tesseract.createWorker('fra+eng',1,{logger:m=>{
+      if(m?.status==='recognizing text')txt('ocr-status','Lecture en cours : '+Math.round((m.progress||0)*100)+' %');
+    }}).catch(e=>{ocrWorkerPromise=null;throw e});
+  }
+  return await ocrWorkerPromise;
+}
+async function releaseOcrWorker(){
+  if(!ocrWorkerPromise)return;
+  const p=ocrWorkerPromise;ocrWorkerPromise=null;
+  try{const w=await p;await w.terminate()}catch(e){console.warn('OCR: fermeture',e)}
+}
+function applyOcrSuggestion(candidate){
+  if(!candidate||activeRole!=='a')return;
+  const def=ANA_TARIFFS[candidate.code]||ANA_TARIFFS.OTHER;
+  $('f-provider').value='orange';
+  $('f-pricing').value='gross';
+  $('f-group').value=def.group;
+  fillAnaCodes();
+  $('f-code').value=candidate.code;
+  $('f-reference').value=candidate.sog?'SOG-'+candidate.sog:'';
+  if(candidate.date)$('f-date').value=candidate.date;
+  $('f-expert').value=candidate.expert===true?'yes':'no';
+  if(candidate.code==='OTHER')$('f-custom').value='Intervention à préciser';
+  $('f-qty').value='1';
+  refreshAnaPrice();
+  txt('draft-badge','À vérifier');
+  txt('a-msg','Capture analysée : contrôle le code, la date, le palier, le tarif et les frais. Clique sur Valider et enregistrer seulement après vérification.');
+}
+function showOcrSuggestion(index,fill=true){
+  if(index<0||index>=ocrSuggestions.length){ocrCurrent=-1;$('ocr-review').classList.add('hidden');txt('draft-badge','Manuel');return;}
+  ocrCurrent=index;
+  const c=ocrSuggestions[index];
+  $('ocr-review').classList.remove('hidden');
+  txt('ocr-counter',(index+1)+' / '+ocrSuggestions.length);
+  txt('ocr-title',(c.sog?'SOG-'+c.sog:'Référence à vérifier')+' · '+(ANA_TARIFFS[c.code]?.name||'Type à préciser'));
+  txt('ocr-summary',c.reason+' — '+(c.date||'date à vérifier')+'. Tarif Orange proposé : '+(ANA_TARIFFS[c.code]?.orange==null?'prix manuel':money(ANA_TARIFFS[c.code].orange))+' HT. Aucune intervention n’est enregistrée sans validation.');
+  const img=$('ocr-picture');img.src=c.imageUrl;img.alt='Capture '+c.fileName+' proposée pour validation';
+  const lines=$('ocr-warning-lines');lines.replaceChildren();for(const warning of c.warnings){const li=document.createElement('li');li.textContent=warning;lines.append(li)}
+  $('ocr-prev').disabled=index===0;
+  $('ocr-next').disabled=index===ocrSuggestions.length-1;
+  if(fill)applyOcrSuggestion(c);
+}
+function ignoreOcrCurrent(){
+  if(ocrCurrent<0)return;
+  const item=ocrSuggestions.splice(ocrCurrent,1);
+  if(item[0]?.imageUrl?.startsWith('blob:')&&!ocrSuggestions.some(x=>x.imageUrl===item[0].imageUrl))URL.revokeObjectURL(item[0].imageUrl);
+  if(ocrSuggestions.length)showOcrSuggestion(Math.min(ocrCurrent,ocrSuggestions.length-1));
+  else showOcrSuggestion(-1);
+}
+async function analyseCapture(file,url=null){
+  if(ocrBusy){txt('ocr-status','Analyse déjà en cours. Attends qu’elle termine.');return}
+  if(!activeUser||activeRole!=='a')throw Error('Ouvre l’espace Anaïs avant d’analyser.');
+  ocrBusy=true;
+  const objectUrl=url||URL.createObjectURL(file);
+  try{
+    txt('ocr-status','Lecture de '+file.name+'… première analyse parfois longue.');
+    const worker=await getOcrWorker();
+    const result=await worker.recognize(file);
+    const extracted=result?.data?.text||'';
+    if(!extracted.trim())throw Error('Aucun texte détecté : saisie manuelle possible.');
+    const drafts=screenshotsToDrafts(extracted,objectUrl,file.name);
+    if(drafts.length>1 && objectUrl.startsWith('blob:')){
+      // Plusieurs brouillons peuvent partager une même image; ne pas la libérer avant la fin.
+    }
+    const start=ocrSuggestions.length;
+    ocrSuggestions.push(...drafts);
+    if(ocrCurrent===-1)showOcrSuggestion(start);
+    txt('ocr-status','✓ '+drafts.length+' intervention(s) proposée(s) depuis '+file.name+'. Anaïs doit vérifier puis enregistrer chaque proposition.');
+    if(ocrCurrent===start)$('ocr-review').scrollIntoView({behavior:'smooth',block:'start'});
+    return drafts;
+  }catch(e){if(!url)URL.revokeObjectURL(objectUrl);txt('ocr-status','Image sauvegardée, mais lecture automatique impossible : '+e.message);return []}
+  finally{ocrBusy=false}
+}
+function completeOcrAfterSave(savedReference){
+  if(ocrCurrent<0)return;
+  const current=ocrSuggestions[ocrCurrent];
+  if(current)ignoreOcrCurrent();
+  if(ocrCurrent<0)txt('ocr-status','✓ Toutes les propositions ont été traitées.');
+}
+$('ocr-prev').addEventListener('click',()=>showOcrSuggestion(ocrCurrent-1));
+$('ocr-next').addEventListener('click',()=>showOcrSuggestion(ocrCurrent+1));
+$('ocr-fill').addEventListener('click',()=>{if(ocrCurrent>=0)applyOcrSuggestion(ocrSuggestions[ocrCurrent]);$('a-form').scrollIntoView({behavior:'smooth',block:'start'});});
+$('ocr-ignore').addEventListener('click',ignoreOcrCurrent);
+
+async function uploadCaptures(e){
+  const input=e.currentTarget,files=[...(input.files||[])];if(!files.length)return;
+  try{
+    if(!client||!activeUser)throw Error('Une session est nécessaire. Connecte-toi ou ouvre l’espace invité Anaïs.');
+    if(files.length>10)throw Error('Envoie 10 images maximum à la fois.');
+    const bucket=client.storage.from(CAPTURE_BUCKET),userId=activeUser.id;
+    let analysed=0;
+    for(let i=0;i<files.length;i++){
+      const file=files[i];
+      if(!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Format accepté : PNG, JPG, WEBP.');
+      if(file.size>8*1024*1024)throw Error('Image trop volumineuse : maximum 8 Mo.');
+      captureStatus('Envoi de la capture '+(i+1)+'/'+files.length+'…');
+      const ext=file.type==='image/jpeg'?'jpg':file.type==='image/png'?'png':'webp';
+      const name=Date.now()+'-'+crypto.randomUUID()+'.'+ext;
+      const {error}=await bucket.upload(userId+'/'+name,file,{upsert:false,contentType:file.type,cacheControl:'3600'});
+      if(error)throw error;
+      if(activeRole==='a'){
+        const results=await analyseCapture(file);
+        analysed+=results?.length||0;
+      }
+    }
+    captureStatus('✓ '+files.length+' capture(s) sauvegardée(s) en privé. '+(activeRole==='a'?analysed+' proposition(s) à valider.':''));
+    await refreshCaptures();
+    if(activeRole==='a')await releaseOcrWorker();
+  }catch(err){captureStatus('Envoi impossible : '+err.message)}finally{input.value=''}
+}
+async function enterAnaisGuest(){
+  const button=$('auth-guest');button.disabled=true;txt('auth-message','Ouverture de l’espace Anaïs…');
+  try{
+    if(!client)throw Error('Le service Supabase ne répond pas. Actualise le site.');
+    const {data,error}=await client.auth.signInAnonymously({options:{data:{display_name:'Anaïs'}}});
+    if(error)throw error;
+    if(!data?.user)throw Error('Impossible de créer la session invitée');
+    const {error:profileError}=await client.from('profiles').update({display_name:'Anaïs'}).eq('id',data.user.id);
+    if(profileError)throw profileError;
+    await bootstrap(data.user);
+  }catch(err){
+    txt('auth-message','Accès invité indisponible : '+err.message+'\nActive « Anonymous Sign-Ins » dans Supabase > Authentication > Providers (Anonymous).');
+  }finally{button.disabled=false}
+}
+
 function dateFmt(s){const d=new Date(s+'T12:00:00');return Number.isNaN(+d)?s:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}
 function renderM(){
   const rows=demo?[
@@ -143,6 +511,71 @@ function renderM(){
   $('demo-note').classList.toggle('hidden',!demo);
   txt('m-note',demo?'Mode démonstration : chiffres entièrement fictifs.':'Données privées synchronisées dans Supabase. Aucune donnée personnelle dans le dépôt GitHub public.');
 }
+// Tarifs HT issus du comparatif historique Orange 2025-10 / Formatel transmis.
+// F03 et F04 : aucun tarif vérifié dans le comparatif, donc saisie manuelle obligatoire.
+const ANA_TARIFFS={
+  LSAF1:{name:'Aérien · palier 1',group:'aerien',orange:126,formatelGross:195,formatelNet:146.25},
+  LSAF2:{name:'Aérien · palier 2',group:'aerien',orange:113,formatelGross:175.50,formatelNet:131.63},
+  LSOU1:{name:'Souterrain · palier 1',group:'souterrain',orange:100,formatelGross:147,formatelNet:110.25},
+  LSOU2:{name:'Souterrain · palier 2',group:'souterrain',orange:90,formatelGross:132,formatelNet:99},
+  LSIM1:{name:'Immeuble · palier 1',group:'immeuble',orange:51,formatelGross:75,formatelNet:56.25},
+  LSIM2:{name:'Immeuble · palier 2',group:'immeuble',orange:46,formatelGross:67.5,formatelNet:50.63},
+  SAVA1:{name:'SAV · palier 1',group:'sav',orange:27,formatelGross:49.50,formatelNet:37.13},
+  SAVA2:{name:'SAV · palier 2',group:'sav',orange:18,formatelGross:44.25,formatelNet:33.19},
+  F03:{name:'SAV F03',group:'sav',orange:null,formatelGross:null,formatelNet:null},
+  F04:{name:'SAV F04',group:'sav',orange:null,formatelGross:null,formatelNet:null},
+  PLP1:{name:'PLP · palier 1',group:'plp',orange:36,formatelGross:58.13,formatelNet:43.59},
+  PLP2:{name:'PLP · palier 2',group:'plp',orange:32,formatelGross:52.31,formatelNet:39.23},
+  PSER1:{name:'Service · palier 1',group:'plp',orange:14,formatelGross:59.25,formatelNet:44.44},
+  PSER2:{name:'Service · palier 2',group:'plp',orange:9,formatelGross:53.25,formatelNet:39.94},
+  OTHER:{name:'Autre prestation',group:'autre',orange:null,formatelGross:null,formatelNet:null}
+};
+function renderABreakdown(){
+  const grouped=new Map();
+  for(const r of aRows){
+    const code=r.billingCode||r.type||'Divers';
+    const provider=r.billingProvider==='orange'?'Orange':r.billingProvider==='formatel'?'Formatel':'Manuel / ancien';
+    const expert=r.billingExpert===true?'Oui':'Non';
+    const label=code==='OTHER'?r.type:((ANA_TARIFFS[code]?.name||r.type)+' · '+code);
+    const key=JSON.stringify([label,provider,expert,r.billingPricing||'']);
+    if(!grouped.has(key))grouped.set(key,{label,provider,expert,qty:0,ca:0});
+    const x=grouped.get(key);x.qty+=r.qty;x.ca+=r.qty*r.unitPrice;
+  }
+  const tbody=$('a-breakdown');tbody.replaceChildren();
+  if(!grouped.size){tbody.innerHTML='<tr><td colspan="5" class="emptytable">Aucune prestation enregistrée.</td></tr>';return}
+  for(const v of [...grouped.values()].sort((a,b)=>b.ca-a.ca)){
+    const tr=document.createElement('tr');
+    [v.label,v.provider,v.expert,String(v.qty),money(v.ca)].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td)});
+    tbody.append(tr);
+  }
+}
+function fillAnaCodes(){
+  const group=$('f-group').value,select=$('f-code'),prev=select.value;
+  select.replaceChildren();
+  for(const [code,def] of Object.entries(ANA_TARIFFS)){
+    if(def.group!==group)continue;
+    const option=document.createElement('option');option.value=code;option.textContent=def.name+' ('+code+')';select.append(option);
+  }
+  if([...select.options].some(option=>option.value===prev))select.value=prev;
+  refreshAnaPrice();
+}
+function refreshAnaPrice(){
+  const code=$('f-code').value,provider=$('f-provider').value,pricing=$('f-pricing').value;
+  $('f-pricing-wrap').classList.toggle('hidden',provider!=='formatel');
+  $('f-custom-wrap').classList.toggle('hidden',code!=='OTHER');
+  $('f-custom').required=code==='OTHER';
+  const def=ANA_TARIFFS[code];
+  const rate=provider==='orange'?def?.orange:provider==='formatel'?(pricing==='gross'?def?.formatelGross:pricing==='minus25'?def?.formatelNet:(def?.formatelNet==null?null:Math.round((def.formatelNet*0.95+Number.EPSILON)*100)/100)):null;
+  const input=$('f-price');
+  if(rate!=null){input.value=rate.toFixed(2);input.placeholder='';}
+  else{input.value='';input.placeholder='Saisis le prix HT';}
+  const expert=$('f-expert').value==='yes';
+  const note=$('f-price-note');
+  note.classList.toggle('warning-rate',rate==null||expert);
+  if(rate==null){note.textContent='Tarif non vérifié pour ce code / barème : indique le montant HT manuellement avant d’enregistrer.';}
+  else{note.textContent='Tarif indicatif : '+money(rate)+' HT (comparatif historique, tarif modifiable).'+(expert?' Le supplément « expert » n’est pas connu : ajuste le prix HT si nécessaire.':' Le palier 1/2 dépend des délais, pas du statut expert.');}
+  preview();
+}
 function renderA(){
   const t=totals(aRows);txt('a-ca',money(t.ca));txt('a-count',number(t.count));
   txt('a-km',number(t.km)+' km');txt('a-net',money(t.ca-t.fuel-t.tolls));
@@ -150,6 +583,7 @@ function renderA(){
   txt('a-total-net',money(t.ca-t.fuel-t.tolls));
   txt('a-days',aRows.length+(aRows.length>1?' entrées':' entrée'));
   const tbody=$('a-table');tbody.replaceChildren();
+  renderABreakdown();
   if(!aRows.length){tbody.innerHTML='<tr><td colspan="8" class="emptytable">Aucune intervention pour le moment.</td></tr>';return}
   for(const r of [...aRows].sort((a,b)=>b.date.localeCompare(a.date))){
     const tr=document.createElement('tr');
@@ -187,7 +621,7 @@ async function refreshRows(silent=false){
   const uid=activeUser.id;
   if(!silent)syncState('Synchronisation…');
   inFlight=(async()=>{
-    const {data,error}=await client.from('interventions').select('id,work_date,intervention_type,reference,quantity,unit_price_ht,kilometers,consumption_l100,fuel_eur_l,tolls_eur').eq('user_id',uid).order('work_date',{ascending:false}).limit(5000);
+    const {data,error}=await client.from('interventions').select('id,work_date,intervention_type,reference,quantity,unit_price_ht,kilometers,consumption_l100,fuel_eur_l,tolls_eur,billing_provider,billing_code,billing_expert,billing_pricing').eq('user_id',uid).order('work_date',{ascending:false}).limit(5000);
     if(error)throw error;
     if(!activeUser||activeUser.id!==uid)return;
     const rows=(data||[]).map(fromDB);
@@ -203,15 +637,16 @@ async function bootstrap(user){
     const {data,error}=await client.from('profiles').select('id,display_name').eq('id',user.id).single();
     if(error)throw error;
     activeUser=user;
-    const name=data.display_name||'Mohamed';
+    const name=(user.is_anonymous||user.app_metadata?.provider==='anonymous')?'Anaïs':(data.display_name||'Mohamed');
     activeRole=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().startsWith('anais')?'a':'m';
     mRows=[];aRows=[];demo=false;txt('demo-m','Aperçu démo');
-    txt('connected-account',user.email||'Compte connecté');
+    txt('connected-account',user.is_anonymous?'Anaïs · invité sans mot de passe (cet appareil)':(user.email||'Compte connecté'));
     document.body.classList.remove('signed-out');
     $('auth-gate').classList.add('hidden');
     switchPage(activeRole);
     showLegacyBanner();
     await refreshRows(true);
+    await refreshCaptures();
   }catch(e){console.error('FIBREE: ouverture du compte',e);txt('auth-message','Impossible de charger ton profil : '+e.message);document.body.classList.add('signed-out');$('auth-gate').classList.remove('hidden')}
 }
 function signedOutUI(){
@@ -284,9 +719,15 @@ async function uploadFileEvent(e){
 function preview(){txt('f-preview',money(numeric($('f-qty').value)*numeric($('f-price').value)))}
 $('f-date').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
 for(const id of ['f-qty','f-price'])$(id).addEventListener('input',preview);
+$('f-group').addEventListener('change',fillAnaCodes);
+for(const id of ['f-provider','f-pricing','f-expert'])$(id).addEventListener('change',refreshAnaPrice);
+$('f-code').addEventListener('change',refreshAnaPrice);
+fillAnaCodes();
 $('auth-form').addEventListener('submit',submitAuth);
+$('auth-guest').addEventListener('click',enterAnaisGuest);
+for(const role of ['m','a'])$('capture-upload-'+role).addEventListener('change',uploadCaptures);
 $('auth-mode-btn').addEventListener('click',()=>setAuthMode(authMode==='login'?'signup':'login'));
-$('sign-out').addEventListener('click',async()=>{if(!client)return;await client.auth.signOut();signedOutUI()});
+$('sign-out').addEventListener('click',async()=>{if(!client)return;if(activeUser?.is_anonymous&&!confirm('Attention : en quittant le compte invité, ses données pourraient devenir définitivement inaccessibles depuis cet appareil. Veux-tu vraiment te déconnecter ?'))return;await client.auth.signOut();signedOutUI()});
 $('sync-now').addEventListener('click',()=>refreshRows(false));
 $('demo-m').addEventListener('click',()=>{demo=!demo;txt('demo-m',demo?'Quitter la démo':'Aperçu démo');renderM()});
 $('clear-m').remove();
@@ -294,12 +735,24 @@ $('a-form').addEventListener('submit',async e=>{
   e.preventDefault();if(!activeUser||activeRole!=='a')return;
   const btn=$('a-form').querySelector('[type=submit]');btn.disabled=true;txt('a-msg','Enregistrement…');
   try{
-    const row=cleanRow({date:$('f-date').value,type:$('f-type').value,qty:$('f-qty').value,unitPrice:$('f-price').value,km:$('f-km').value,tolls:$('f-tolls').value,consumption:$('f-cons').value,fuelPrice:$('f-fuel-price').value});
+    const code=$('f-code').value,expert=$('f-expert').value==='yes',reference=$('f-reference').value.trim();
+    const provider=$('f-provider').value;
+    const name=code==='OTHER'?$('f-custom').value.trim():(ANA_TARIFFS[code]?.name||'Prestation');
+    if(!name)throw Error('Indique le type de prestation');
+    const type=name+' · '+code+' · '+(expert?'Expert':'Non expert')+' · '+(provider==='orange'?'Orange':provider==='formatel'?'Formatel':'Manuel');
+    const row=cleanRow({date:$('f-date').value,type,reference,qty:$('f-qty').value,unitPrice:$('f-price').value,km:$('f-km').value,tolls:$('f-tolls').value,consumption:$('f-cons').value,fuelPrice:$('f-fuel-price').value,
+      billingProvider:provider,billingCode:code,billingExpert:expert,billingPricing:provider==='formatel'?$('f-pricing').value:provider==='orange'?'standard':'manual'});
+    if(reference){
+      const {data:existing,error:lookupError}=await client.from('interventions').select('id').eq('user_id',activeUser.id).eq('reference',reference).limit(1);
+      if(lookupError)throw lookupError;
+      if(existing?.length)throw Error('La référence '+reference+' est déjà enregistrée : aucune ligne en double ajoutée.');
+    }
     const {error}=await client.from('interventions').insert(toDB(row));
     if(error)throw error;
     await refreshRows(true);
-    txt('a-msg','✓ Intervention sauvegardée et synchronisée');
-    $('f-type').value='';$('f-qty').value=1;$('f-price').value='';$('f-km').value=0;$('f-tolls').value=0;preview();
+    txt('a-msg','✓ Intervention validée, sauvegardée et synchronisée');
+    $('f-custom').value='';$('f-reference').value='';$('f-qty').value=1;$('f-km').value=0;$('f-tolls').value=0;refreshAnaPrice();
+    completeOcrAfterSave(reference);
   }catch(error){txt('a-msg','Erreur : '+error.message)}finally{btn.disabled=false}
 });
 $('a-export').addEventListener('click',()=>download('fibree-anais-sauvegarde.json',{version:1,rows:aRows}));
